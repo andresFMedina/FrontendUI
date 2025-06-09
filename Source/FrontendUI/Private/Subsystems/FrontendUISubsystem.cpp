@@ -43,8 +43,6 @@ void UFrontendUISubsystem::RegisterCreatedPrimaryLayout(UWidget_PrimaryLayout* I
 	check(InCreatedWidget);
 
 	CreatedPrimaryLayout = InCreatedWidget;
-
-	Debug::Print(FString::Printf(TEXT("Registered created primary layout widget")));
 }
 
 void UFrontendUISubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<UWidget_ActivatableBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, UWidget_ActivatableBase*)> AsyncPushStateCallback)
