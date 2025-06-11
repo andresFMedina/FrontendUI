@@ -8,6 +8,7 @@
 
 class UOptionsDataRegistry;
 class UFrontendTabListWidgetBase;
+class UFrontendCommonListView;
 /**
  * 
  */
@@ -23,6 +24,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	//Bound Widgets
 	UFrontendTabListWidgetBase* TabListWidget_OptionsTabs;
+
+	UPROPERTY(meta = (BindWidget))
+	UFrontendCommonListView* CommonListView_OptionsList;
 	
 private:
 	UOptionsDataRegistry* GetOrCreateDataRegistry();

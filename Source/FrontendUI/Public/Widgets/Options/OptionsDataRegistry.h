@@ -8,6 +8,7 @@
 
 
 class UListDataObject_Collection;
+class UListDataObject_Base;
 /**
  * 
  */
@@ -21,6 +22,9 @@ public:
 	void InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer);
 
 	FORCEINLINE const TArray<UListDataObject_Collection*>& GetRegisteredOptionsTabsCollections() const { return RegisteredOptionsTabsCollections; }
+
+	TArray<UListDataObject_Base*> GetListSourceItemsBySelectedTabId(const FName& TabID) const;
+	
 
 private:
 
