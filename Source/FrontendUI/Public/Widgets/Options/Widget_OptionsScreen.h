@@ -21,6 +21,9 @@ protected:
 	virtual void NativeOnInitialized() override;
 
 	virtual void NativeOnActivated() override;
+
+	virtual void NativeOnDeactivated() override;
+
 	UPROPERTY(meta = (BindWidget))
 	//Bound Widgets
 	UFrontendTabListWidgetBase* TabListWidget_OptionsTabs;
@@ -39,6 +42,10 @@ private:
 
 	UFUNCTION()
 	void OnOptionsTabSelected(FName TabId);
+
+	void OnListViewItemHovered(UObject* InHoveredItem, bool bIsHovered);
+	void OnListViewItemSelected(UObject* InSelectedItem);
+	
 
 	UPROPERTY(Transient)
 	UOptionsDataRegistry* OwningDataRegistry;

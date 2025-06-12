@@ -4,7 +4,11 @@
 #include "Widgets/Options/OptionsDataRegistry.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 #include "Widgets/Options/DataObjects/MyListDataObject_String.h"
+#include "Widgets/Options/OptionsDataInteractionHelper.h"
+#include "FrontendSettings/FrontendGameUserSettings.h"
 
+#define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
+   MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UFrontendGameUserSettings, SetterOrGetterFuncName))	
 
 void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer)
 {
@@ -42,6 +46,10 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 		GameDifficultyData->AddDynamicOption(TEXT("Normal"), FText::FromString("Normal"));
 		GameDifficultyData->AddDynamicOption(TEXT("Hard"), FText::FromString("Hard"));
 
+		GameDifficultyData->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
+		GameDifficultyData->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
+
+		GameDifficultyData->SetShouldApplyChangesImmediatly(true);
 
 		GameplayTabCollection->AddChildListData(GameDifficultyData);
 	}

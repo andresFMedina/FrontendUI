@@ -14,6 +14,11 @@ void UWidget_ListEntry_String::NativeOnInitialized()
 
 	CommonButton_Previous->OnClicked().AddUObject(this, &UWidget_ListEntry_String::OnPreviousOptionButtonClicked);
 	CommonButton_Next->OnClicked().AddUObject(this, &UWidget_ListEntry_String::OnNextOptionButtonClicked);
+
+	CommonRotator_AvailableOptions->OnClicked().AddLambda([this]()
+		{
+			SelectThisEntryWidget();
+		});
 }
 
 void UWidget_ListEntry_String::OnOwningListDataViewSet(UListDataObject_Base* InOwningDataObject)
@@ -21,7 +26,7 @@ void UWidget_ListEntry_String::OnOwningListDataViewSet(UListDataObject_Base* InO
 	Super::OnOwningListDataViewSet(InOwningDataObject);
 
 	OwningStringDataObject = CastChecked<UMyListDataObject_String>(InOwningDataObject);
-	
+
 	CommonRotator_AvailableOptions->PopulateTextLabels(OwningStringDataObject->GetAvailableOptionsDisplayNames());
 	CommonRotator_AvailableOptions->SetSelectedOptionByText(OwningStringDataObject->GetCurrentDisplayName());
 }
@@ -40,6 +45,8 @@ void UWidget_ListEntry_String::OnPreviousOptionButtonClicked()
 	{
 		OwningStringDataObject->BackToPreviousOption();
 	}
+
+	SelectThisEntryWidget();
 }
 
 void UWidget_ListEntry_String::OnNextOptionButtonClicked()
@@ -48,4 +55,5 @@ void UWidget_ListEntry_String::OnNextOptionButtonClicked()
 	{
 		OwningStringDataObject->AdvanceToNextOption();
 	}
+	SelectThisEntryWidget();
 }

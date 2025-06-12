@@ -9,6 +9,8 @@
 #include "Widgets/Components/FrontendTabListWidgetBase.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 #include "Widgets/Components/FrontendCommonListView.h"
+#include "FrontendSettings/FrontendGameUserSettings.h"
+#include "Widgets/Options/ListEntries/Widget_ListEntry_Base.h"
 
 
 void UWidget_OptionsScreen::NativeOnInitialized()
@@ -37,7 +39,15 @@ void UWidget_OptionsScreen::NativeOnInitialized()
 		&ThisClass::OnOptionsTabSelected
 	);
 
-	
+	CommonListView_OptionsList->OnItemIsHoveredChanged().AddUObject(
+		this,
+		&ThisClass::OnListViewItemHovered
+	);
+
+	CommonListView_OptionsList->OnItemSelectionChanged().AddUObject(
+		this,
+		&ThisClass::OnListViewItemSelected
+	);
 }
 
 void UWidget_OptionsScreen::NativeOnActivated()
@@ -63,6 +73,13 @@ void UWidget_OptionsScreen::NativeOnActivated()
 		);
 	}
 
+}
+
+void UWidget_OptionsScreen::NativeOnDeactivated()
+{
+	Super::NativeOnDeactivated();
+
+	UFrontendGameUserSettings::Get()->ApplySettings(true);
 }
 
 UOptionsDataRegistry* UWidget_OptionsScreen::GetOrCreateDataRegistry()
@@ -100,4 +117,31 @@ void UWidget_OptionsScreen::OnOptionsTabSelected(FName TabId)
 		CommonListView_OptionsList->NavigateToIndex(0);
 		CommonListView_OptionsList->SetSelectedIndex(0);
 	}	
+}
+
+void UWidget_OptionsScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bIsHovered)
+{
+	if (!InHoveredItem)
+	{
+		return;
+	}
+
+	auto HoveredEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem<UWidget_ListEntry_Base>(InHoveredItem);
+	check(HoveredEntryWidget);
+
+	HoveredEntryWidget->NativeOnListEntryWidgetHovered(bIsHovered);
+}
+
+void UWidget_OptionsScreen::OnListViewItemSelected(UObject* InSelectedItem)
+{
+	if (!InSelectedItem)
+	{
+		return;
+	}
+	Debug::Print(
+		FString::Printf(TEXT("Selected item: %s"), *InSelectedItem->GetName()),
+		-1,
+		5.0f,
+		FColor::Blue
+	);
 }
