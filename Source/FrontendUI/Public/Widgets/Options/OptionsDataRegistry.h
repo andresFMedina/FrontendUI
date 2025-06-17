@@ -35,5 +35,7 @@ private:
 	void InitAudioCollectionTab();
 	void InitVideoCollectionTab();
 	void InitControlsCollectionTab();
+
+	void FindChildListDataRecurively(UListDataObject_Base* InParentData, TArray<UListDataObject_Base*>& OutChildData) const;
 	
 };

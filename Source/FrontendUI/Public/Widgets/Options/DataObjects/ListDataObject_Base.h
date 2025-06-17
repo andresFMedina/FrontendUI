@@ -36,6 +36,10 @@ public:
 
 	FORCEINLINE void SetShouldApplyChangesImmediatly(bool bInShouldApplyChangesImmediatly) { bShouldApplyChangesImmediatly = bInShouldApplyChangesImmediatly; }
 
+	virtual bool HasDefaultValue() const { return false; }
+	virtual bool CanResetBackToDefaultValue() const { return false; }
+	virtual bool TryResetBackToDefaultValue() { return false; }
+
 protected:
 	virtual void OnDataObjectInitialized();
 	virtual void NotifyListDataModified(UListDataObject_Base* InDataModified, EOptionsListDataModifyReason ModifyReason = EOptionsListDataModifyReason::DirectlyModified);

@@ -18,6 +18,10 @@ public:
 	void AddDynamicOption(const FString& InOption, const FText& InDisplayName);
 	void AdvanceToNextOption();
 	void BackToPreviousOption();
+	void OnRotatorInitiatedValueChange(const FText& InNewSelectedText);
+
+	virtual bool CanResetBackToDefaultValue() const override;
+	virtual bool TryResetBackToDefaultValue() override;
 
 protected:
 

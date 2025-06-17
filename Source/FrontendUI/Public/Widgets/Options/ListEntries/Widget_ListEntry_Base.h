@@ -24,8 +24,16 @@ public:
 
 	void NativeOnListEntryWidgetHovered(bool bWasHovered);
 
+	virtual FReply NativeOnFocusReceived(const FGeometry& InGeometry, const FFocusEvent& InFocusEvent) override;
+
+
 protected:
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Get Widget To Focus For Gamepad"))
+	UWidget* BP_GetWidgetToFocusForGamepad() const;
+
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+
+	virtual void NativeOnEntryReleased() override;
 
 	virtual void OnOwningListDataViewSet(UListDataObject_Base* InOwningDataObject);
 

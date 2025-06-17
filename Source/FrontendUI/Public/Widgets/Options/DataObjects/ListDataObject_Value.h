@@ -19,8 +19,17 @@ public:
 	void SetDataDynamicGetter(const TSharedPtr<FOptionsDataInteractionHelper>& InGetterFuncPath);
 	void SetDataDynamicSetter(const TSharedPtr<FOptionsDataInteractionHelper>& InSetterFuncPath);
 	
+	FORCEINLINE void SetDefaultValueFromString(const FString& InDefaultValue) {	DefaultStringValue = InDefaultValue; }
+
+	virtual bool HasDefaultValue() const override { return DefaultStringValue.IsSet(); }
+	
 	
 protected:
+	FORCEINLINE FString GetDefaultValueAsString() const { return DefaultStringValue.GetValue(); }
+
 	TSharedPtr<FOptionsDataInteractionHelper> DataDynamicGetter;
 	TSharedPtr<FOptionsDataInteractionHelper> DataDynamicSetter;
+
+private:
+	TOptional<FString> DefaultStringValue;
 };

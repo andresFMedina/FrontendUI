@@ -5,6 +5,7 @@
 #include "Widgets/Options/OptionsDataInteractionHelper.h"
 #include "FrontendDebugHelper.h"
 
+
 void UMyListDataObject_String::AddDynamicOption(const FString& InOption, const FText& InDisplayName)
 {
 	AvailableOptions.Add(InOption);
@@ -75,6 +76,51 @@ void UMyListDataObject_String::BackToPreviousOption()
 	}
 }
 
+void UMyListDataObject_String::OnRotatorInitiatedValueChange(const FText& InNewSelectedText)
+{
+	int32 FoundIndex = AvailableOptionsDisplayNames.IndexOfByPredicate([InNewSelectedText](const FText& Option)
+		{
+			return Option.EqualTo(InNewSelectedText);
+		});
+
+	if (FoundIndex != INDEX_NONE && AvailableOptions.IsValidIndex(FoundIndex)) 
+	{
+		CurrentDisplayName = InNewSelectedText;
+		CurrentStringValue = AvailableOptions[FoundIndex];
+
+		if (DataDynamicSetter)
+		{
+			DataDynamicSetter->SetValueFromString(CurrentStringValue);
+
+			NotifyListDataModified(this);
+		}
+	}
+		
+}
+
+bool UMyListDataObject_String::CanResetBackToDefaultValue() const
+{
+	return HasDefaultValue() && CurrentStringValue != GetDefaultValueAsString();
+}
+
+bool UMyListDataObject_String::TryResetBackToDefaultValue()
+{
+	if (CanResetBackToDefaultValue())
+	{
+		CurrentStringValue = GetDefaultValueAsString();
+
+		TrySetDisplayTextFromStringValue(CurrentStringValue);
+
+		if (DataDynamicSetter)
+		{
+			DataDynamicSetter->SetValueFromString(CurrentStringValue);			
+			NotifyListDataModified(this, EOptionsListDataModifyReason::ResetToDefault);
+			return true;
+		}		
+	}
+	return false;
+}
+
 void UMyListDataObject_String::OnDataObjectInitialized()
 {
 	if (!AvailableOptions.IsEmpty())
@@ -82,7 +128,11 @@ void UMyListDataObject_String::OnDataObjectInitialized()
 		CurrentStringValue = AvailableOptions[0];
 	}
 
-	//TODO: Read from the saved value
+	if (HasDefaultValue())
+	{
+		CurrentStringValue = GetDefaultValueAsString();
+	}
+	
 	if (DataDynamicGetter)
 	{
 		if (!DataDynamicGetter->GetValueAsString().IsEmpty()) 

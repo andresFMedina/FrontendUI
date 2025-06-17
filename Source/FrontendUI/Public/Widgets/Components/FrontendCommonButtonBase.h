@@ -39,4 +39,7 @@ private:
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetButtonText(FText InText);
+
+	UFUNCTION(BlueprintCallable)
+	FText GetButtonDisplayText() const;
 };

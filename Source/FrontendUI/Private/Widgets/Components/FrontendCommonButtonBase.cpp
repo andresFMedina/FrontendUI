@@ -49,3 +49,12 @@ void UFrontendCommonButtonBase::SetButtonText(FText InText)
 		CommonTextBlock_ButtonText->SetText(bUseUpperCaseButtonText ? InText.ToUpper() : InText);
 	}
 }
+
+FText UFrontendCommonButtonBase::GetButtonDisplayText() const
+{
+	if (CommonTextBlock_ButtonText)
+	{
+		return CommonTextBlock_ButtonText->GetText();
+	}
+	return FText();
+}
