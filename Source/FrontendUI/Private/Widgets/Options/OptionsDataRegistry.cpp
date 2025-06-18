@@ -216,6 +216,32 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 	VideoTabCollection->SetDataID(FName("VideoTabCollection"));
 	VideoTabCollection->SetDataDisplayName(FText::FromString("Video"));
 
+	//Display Resolution Category
+	{
+		auto DisplayResollutionCategoryCollection = NewObject<UListDataObject_Collection>();
+		DisplayResollutionCategoryCollection->SetDataID(FName("DisplayResolutionCategoryCollection"));
+		DisplayResollutionCategoryCollection->SetDataDisplayName(FText::FromString("Display Resolution"));
+
+		VideoTabCollection->AddChildListData(DisplayResollutionCategoryCollection);
+
+		// Window Mode
+		{
+			auto WindowModeData = NewObject<UListDataObject_StringEnum>();
+			WindowModeData->SetDataID(FName("WindowMode"));
+			WindowModeData->SetDataDisplayName(FText::FromString("Window Mode"));
+			WindowModeData->SetDescriptionRichText(FText::FromString(TEXT("Adjusts the window mode of the game.")));
+			WindowModeData->AddEnumOption(EWindowMode::Fullscreen, FText::FromString("Fullscreen"));
+			WindowModeData->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString("Borderless Window"));
+			WindowModeData->AddEnumOption(EWindowMode::Windowed, FText::FromString("Windowed"));
+			WindowModeData->SetDefaultValueFromEnumOption(EWindowMode::WindowedFullscreen);
+			WindowModeData->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFullscreenMode));
+			WindowModeData->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFullscreenMode));
+			WindowModeData->SetShouldApplyChangesImmediatly(true);
+			
+			DisplayResollutionCategoryCollection->AddChildListData(WindowModeData);
+		}
+	}
+
 	RegisteredOptionsTabsCollections.Add(VideoTabCollection);
 }
 

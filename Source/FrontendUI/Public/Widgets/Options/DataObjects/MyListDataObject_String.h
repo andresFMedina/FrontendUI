@@ -61,3 +61,34 @@ private:
 
 
 };
+
+UCLASS()
+class FRONTENDUI_API UListDataObject_StringEnum : public UMyListDataObject_String
+{
+	GENERATED_BODY()
+
+public:
+	template<typename TEnum>
+	void AddEnumOption(const TEnum& InEnumValue, const FText& InDisplayText)
+	{
+		const UEnum* StaticEnumOption = StaticEnum<TEnum>();
+		auto EnumToString = StaticEnumOption->GetNameStringByValue(InEnumValue);
+
+		AddDynamicOption(EnumToString, InDisplayText);
+	}
+
+	template<typename TEnum>
+	TEnum GetCurrentValueAsEnum() const
+	{
+		const UEnum* StaticEnumOption = StaticEnum<TEnum>();
+		return (TEnum)StaticEnumOption->GetValueByNameString(CurrentStringValue);
+	}
+
+	template<typename TEnum>
+	void SetDefaultValueFromEnumOption(const TEnum& InEnumValue)
+	{
+		const UEnum* StaticEnumOption = StaticEnum<TEnum>();
+		FString EnumString = StaticEnumOption->GetNameStringByValue(InEnumValue);
+		SetDefaultValueFromString(EnumString);
+	}
+};

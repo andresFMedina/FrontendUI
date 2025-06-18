@@ -4,6 +4,7 @@
 #include "Controllers/FrontendPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraActor.h"
+#include "FrontendSettings/FrontendGameUserSettings.h"
 
 void AFrontendPlayerController::OnPossess(APawn* InPawn)
 {
@@ -20,4 +21,13 @@ void AFrontendPlayerController::OnPossess(APawn* InPawn)
 			SetViewTargetWithBlend(CameraActor);
 		}
 	}
+
+	auto FrontendSettings = UFrontendGameUserSettings::Get();
+
+	if (FrontendSettings->GetLastCPUBenchmarkResult() == -1.f || FrontendSettings->GetLastGPUBenchmarkResult() == -1.f)
+	{
+		FrontendSettings->RunHardwareBenchmark();
+		FrontendSettings->ApplyHardwareBenchmarkResults();
+	}
+
 }
