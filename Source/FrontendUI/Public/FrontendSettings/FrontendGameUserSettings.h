@@ -30,6 +30,26 @@ public:
 	FORCEINLINE float GetOverallVolume() const { return OverallVolume; }
 	UFUNCTION()
 	FORCEINLINE void SetOverallVolume(float InVolume);
+	UFUNCTION()
+	FORCEINLINE float GetMusicVolume() const { return MusicVolume; }
+	UFUNCTION()
+	FORCEINLINE void SetMusicVolume(float InVolume) { MusicVolume = InVolume; }
+	UFUNCTION()
+	FORCEINLINE float GetSoundFXVolume() const { return SoundFXVolume; }
+	UFUNCTION()
+	FORCEINLINE void SetSoundFXVolume(float InVolume) { SoundFXVolume = InVolume; }
+
+	UFUNCTION()
+	FORCEINLINE bool IsBackgroundAudioEnabled() const { return bEnableBackgroundAudio; }
+
+	UFUNCTION()
+	FORCEINLINE void SetEnableBackgroundAudio(bool bEnable) { bEnableBackgroundAudio = bEnable; }
+
+	UFUNCTION()
+	FORCEINLINE bool IsHDRAudioEnabled() const { return UseHDRAudio; }
+
+	UFUNCTION()
+	FORCEINLINE void SetUseHDRAudio(bool bEnable) { UseHDRAudio = bEnable; }
 
 private:
 	UPROPERTY(Config)
@@ -37,4 +57,16 @@ private:
 	
 	UPROPERTY(Config)
 	float OverallVolume;
+
+	UPROPERTY(Config)
+	float MusicVolume;
+
+	UPROPERTY(Config)
+	float SoundFXVolume;
+
+	UPROPERTY(Config)
+	bool bEnableBackgroundAudio;
+
+	UPROPERTY(Config)
+	bool UseHDRAudio;
 };

@@ -27,6 +27,11 @@ public:
 
 	float GetCurrentValue() const;
 	void SetCurrentValueFromSlider(float InValue);
+
+protected:
+	virtual bool CanResetBackToDefaultValue() const override;
+	virtual bool TryResetBackToDefaultValue() override;
+
 private: 
 	TRange<float> DisplayValueRange = TRange<float>(0.f, 1.f);
 	TRange<float> OutputValueRange = TRange<float>(0.f, 1.f);

@@ -4,7 +4,10 @@
 #include "FrontendSettings/FrontendGameUserSettings.h"
 
 UFrontendGameUserSettings::UFrontendGameUserSettings()
-	:OverallVolume(1.0f)
+	:OverallVolume(1.0f),
+	MusicVolume(1.0f),
+	SoundFXVolume(1.0f),
+	bEnableBackgroundAudio(false)
 {
 }
 

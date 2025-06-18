@@ -36,8 +36,28 @@ protected:
 public:
 	FORCEINLINE const TArray<FText>& GetAvailableOptionsDisplayNames() const { return AvailableOptionsDisplayNames; }
 	FORCEINLINE const TArray<FString>& GetAvailableOptions() const { return AvailableOptions; }
-	FORCEINLINE const FText& GetCurrentDisplayName() const { return CurrentDisplayName; }
+	FORCEINLINE const FText& GetCurrentDisplayName() const { return CurrentDisplayName; }	
+};
+
+UCLASS()
+class FRONTENDUI_API UListDataObject_StringBool : public UMyListDataObject_String
+{
+	GENERATED_BODY()
+
+public:
+	void OverrideTrueDisplayText(const FText& InTrueDisplayText);
+	void OverrideFalseDisplayText(const FText& InFalseDisplayText);
+	void SetTrueAsDefaultValue();
+	void SetFalseAsDefaultValue();
+
+protected:
+	virtual void OnDataObjectInitialized() override;
+
+private:
+	void TryInitBoolValues();
+
+	const FString TrueString = TEXT("true");
+	const FString FalseString = TEXT("false");
 
 
-	
 };

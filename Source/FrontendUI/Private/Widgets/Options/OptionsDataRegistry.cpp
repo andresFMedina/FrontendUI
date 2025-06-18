@@ -123,6 +123,88 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 			
 			VolumeCategoryCollection->AddChildListData(OverallVolumeData);
 		}
+
+		//Music Volume
+		{
+			auto MusicVolumeData = NewObject<UListDataObject_Scalar>();
+			MusicVolumeData->SetDataID(FName("MusicVolume"));
+			MusicVolumeData->SetDataDisplayName(FText::FromString("Music Volume")); ;
+			MusicVolumeData->SetDisplayNumericType(ECommonNumericType::Number);
+			MusicVolumeData->SetDescriptionRichText(FText::FromString(TEXT("Adjusts the volume of the music in the game.")));
+			MusicVolumeData->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			MusicVolumeData->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			MusicVolumeData->SetSliderStepSize(0.01f);
+			MusicVolumeData->SetDefaultValueFromString(LexToString(1.f));
+			MusicVolumeData->SetDisplayNumericType(ECommonNumericType::Percentage);
+			MusicVolumeData->SetFormattingOptions(UListDataObject_Scalar::NoDecimal());
+
+			MusicVolumeData->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetMusicVolume));
+			MusicVolumeData->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetMusicVolume));
+			MusicVolumeData->SetShouldApplyChangesImmediatly(true);
+
+			VolumeCategoryCollection->AddChildListData(MusicVolumeData);
+		}
+
+		//Sound FX Volume
+		{
+			auto SoundFXVolumeData = NewObject<UListDataObject_Scalar>();
+			SoundFXVolumeData->SetDataID(FName("SoundFX"));
+			SoundFXVolumeData->SetDataDisplayName(FText::FromString("SoundFX Volume")); ;
+			SoundFXVolumeData->SetDisplayNumericType(ECommonNumericType::Number);
+			SoundFXVolumeData->SetDescriptionRichText(FText::FromString(TEXT("Adjusts the sound effects of the music in the game.")));
+			SoundFXVolumeData->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			SoundFXVolumeData->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			SoundFXVolumeData->SetSliderStepSize(0.01f);
+			SoundFXVolumeData->SetDefaultValueFromString(LexToString(1.f));
+			SoundFXVolumeData->SetDisplayNumericType(ECommonNumericType::Percentage);
+			SoundFXVolumeData->SetFormattingOptions(UListDataObject_Scalar::NoDecimal());
+
+			SoundFXVolumeData->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetSoundFXVolume));
+			SoundFXVolumeData->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetSoundFXVolume));
+			SoundFXVolumeData->SetShouldApplyChangesImmediatly(true);
+
+			VolumeCategoryCollection->AddChildListData(SoundFXVolumeData);
+		}
+	}
+
+	//Sound Category
+	{
+		auto SoundCategoryCollection = NewObject<UListDataObject_Collection>();
+		SoundCategoryCollection->SetDataID(FName("SoundCategoryCollection"));
+		SoundCategoryCollection->SetDataDisplayName(FText::FromString("Sound"));
+		AudioTabCollection->AddChildListData(SoundCategoryCollection);
+		//Enable Background Audio
+		{
+			auto EnableBackgroundAudio = NewObject<UListDataObject_StringBool>();
+			EnableBackgroundAudio->SetDataID(FName("EnableBackgroundAudio"));
+			EnableBackgroundAudio->SetDataDisplayName(FText::FromString("Enable Background Audio"));
+			EnableBackgroundAudio->SetDescriptionRichText(FText::FromString(TEXT("Enables or disables the background audio.")));
+			EnableBackgroundAudio->SetFalseAsDefaultValue();
+
+			EnableBackgroundAudio->OverrideTrueDisplayText(FText::FromString("Enabled"));
+			EnableBackgroundAudio->OverrideFalseDisplayText(FText::FromString("Disabled"));
+			EnableBackgroundAudio->SetTrueAsDefaultValue();
+			EnableBackgroundAudio->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(IsBackgroundAudioEnabled));
+			EnableBackgroundAudio->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetEnableBackgroundAudio));
+			EnableBackgroundAudio->SetShouldApplyChangesImmediatly(true);
+			SoundCategoryCollection->AddChildListData(EnableBackgroundAudio);
+		}
+		
+		// Use HDR Audio
+		{
+			auto UseHDRAudio = NewObject<UListDataObject_StringBool>();
+			UseHDRAudio->SetDataID(FName("UseHDRAudio"));
+			UseHDRAudio->SetDataDisplayName(FText::FromString("Use HDR Audio Mode"));
+			UseHDRAudio->SetDescriptionRichText(FText::FromString(TEXT("Enables or disables the use of HDR audio.")));
+			UseHDRAudio->SetFalseAsDefaultValue();
+			UseHDRAudio->OverrideTrueDisplayText(FText::FromString("Enabled"));
+			UseHDRAudio->OverrideFalseDisplayText(FText::FromString("Disabled"));
+			UseHDRAudio->SetTrueAsDefaultValue();
+			UseHDRAudio->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(IsHDRAudioEnabled));
+			UseHDRAudio->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetUseHDRAudio));
+			UseHDRAudio->SetShouldApplyChangesImmediatly(true);
+			SoundCategoryCollection->AddChildListData(UseHDRAudio);
+		}
 	}
 
 	RegisteredOptionsTabsCollections.Add(AudioTabCollection);
