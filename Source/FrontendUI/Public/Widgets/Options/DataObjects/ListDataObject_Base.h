@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "FrontendTypes/FrontendEnumTypes.h"
+#include "FrontendTypes/FrontendStructTypes.h"
 #include "ListDataObject_Base.generated.h"
 
 
@@ -20,6 +21,7 @@ class FRONTENDUI_API UListDataObject_Base : public UObject
 public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UListDataObject_Base*, EOptionsListDataModifyReason);
 	FOnListDataModifiedDelegate OnListDataModified;
+	FOnListDataModifiedDelegate OnDependencyDataModified;
 
 	LIST_DATA_ACCESSOR(FName, DataID);
 	LIST_DATA_ACCESSOR(FText, DataDisplayName);
@@ -40,9 +42,22 @@ public:
 	virtual bool CanResetBackToDefaultValue() const { return false; }
 	virtual bool TryResetBackToDefaultValue() { return false; }
 
+	void AddEditCondition(const FOptionsDataEditConditionDescriptor& InEditCondition);
+
+	void AddEditDependencyData(UListDataObject_Base* InDependencyData);
+
+	bool IsDataCurrentlyEditable();
+
+
+
 protected:
 	virtual void OnDataObjectInitialized();
 	virtual void NotifyListDataModified(UListDataObject_Base* InDataModified, EOptionsListDataModifyReason ModifyReason = EOptionsListDataModifyReason::DirectlyModified);
+
+	virtual bool CanSetToForcedStringValue(const FString& InForcedValue) const { return false; }
+	virtual void OnSetToForcedStringValue(const FString& InForcedValue) {}
+
+	virtual void OnEditDependencyDataModified(UListDataObject_Base* InDependencyDataModified, EOptionsListDataModifyReason ModifyReason);
 
 private:
 	FName DataID;
@@ -55,4 +70,7 @@ private:
 	UListDataObject_Base* ParentData;
 
 	bool bShouldApplyChangesImmediatly = false;
+
+	UPROPERTY(Transient)
+	TArray<FOptionsDataEditConditionDescriptor> EditContionDescArray;
 };

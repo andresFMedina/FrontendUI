@@ -92,3 +92,16 @@ public:
 		SetDefaultValueFromString(EnumString);
 	}
 };
+
+UCLASS()
+class FRONTENDUI_API UListDataObject_StringInt : public UMyListDataObject_String
+{
+	GENERATED_BODY()
+
+public:
+	void AddIntegerOption(int32 Value, const FText& InDisplayText);
+
+protected:
+	virtual void OnDataObjectInitialized() override;
+	virtual void OnEditDependencyDataModified(UListDataObject_Base* InDependencyDataModified, EOptionsListDataModifyReason ModifyReason) override;
+};

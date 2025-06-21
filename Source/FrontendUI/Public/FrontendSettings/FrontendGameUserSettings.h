@@ -50,6 +50,14 @@ public:
 
 	UFUNCTION()
 	FORCEINLINE void SetUseHDRAudio(bool bEnable) { UseHDRAudio = bEnable; }
+	//// Audio
+
+	/// Video
+	UFUNCTION()
+	float GetCurrentDisplayGamma() const;
+
+	UFUNCTION()
+	void SetCurrentDisplayGamma(const float InNewGamma);
 
 private:
 	UPROPERTY(Config)

@@ -211,7 +211,7 @@ void UWidget_OptionsScreen::OnOptionsTabSelected(FName TabId)
 	}
 	else 
 	{
-		if (GetActionBindings().Contains(ResetActionBindingHandle))
+		if (!GetActionBindings().Contains(ResetActionBindingHandle))
 		{
 			AddActionBinding(ResetActionBindingHandle);
 		}

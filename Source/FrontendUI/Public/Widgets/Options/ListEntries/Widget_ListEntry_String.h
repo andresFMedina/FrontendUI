@@ -25,6 +25,8 @@ protected:
 
 	virtual void OnOwningListDataObjectModified(UListDataObject_Base* InOwningDataObject, EOptionsListDataModifyReason ModifyReason) override;
 
+	virtual void OnToggleEditableState(bool bIsEditable) override;
+
 
 private:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess="true"))

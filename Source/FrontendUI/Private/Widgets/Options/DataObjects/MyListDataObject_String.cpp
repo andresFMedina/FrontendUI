@@ -208,3 +208,41 @@ void UListDataObject_StringBool::TryInitBoolValues()
 }
 
 /**************************************** UListDataObject_StringBool          ************************************/
+
+/****************************************UListDataObject_StringInt************************************ */
+
+void UListDataObject_StringInt::AddIntegerOption(int32 Value, const FText& InDisplayText)
+{
+	AddDynamicOption(LexToString(Value), InDisplayText);
+}
+
+void UListDataObject_StringInt::OnDataObjectInitialized()
+{
+	Super::OnDataObjectInitialized();
+
+	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
+	{
+		CurrentDisplayName = FText::FromString(TEXT("Custom"));
+	}
+}
+
+void UListDataObject_StringInt::OnEditDependencyDataModified(UListDataObject_Base* InDependencyDataModified, EOptionsListDataModifyReason ModifyReason)
+{
+	if (DataDynamicGetter)
+	{
+		if (CurrentStringValue == DataDynamicGetter->GetValueAsString()) 
+		{
+			return;
+		}
+		CurrentStringValue = DataDynamicGetter->GetValueAsString();
+
+		if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
+		{
+			CurrentDisplayName = FText::FromString(TEXT("Custom"));
+		}
+
+		NotifyListDataModified(this, EOptionsListDataModifyReason::DependencyModified);
+	}
+
+	Super::OnEditDependencyDataModified(InDependencyDataModified, ModifyReason);
+}
