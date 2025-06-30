@@ -85,26 +85,12 @@ void UWidget_ConfirmScreen::InitConfirmScreen(const UConfirmScreenInfoObject* In
 
 	for (const FConfirmScreenButtonInfo& ButtonInfo : InConfirmScreenInfoObject->AvailableScreenButtons)
 	{
-		FDataTableRowHandle InputActionRowHandle;
+
 
 		auto ButtonWidget = DynamicEntryBox_Buttons->CreateEntry<UFrontendCommonButtonBase>();
 		if (ButtonWidget)
 		{
-			switch (ButtonInfo.ConfirmScreenButtonType)
-			{
-			case EConfirmScreenButtonType::Cancelled:
-				InputActionRowHandle = ICommonInputModule::GetSettings().GetDefaultBackAction();
-				break;
-			case EConfirmScreenButtonType::Closed:
-				InputActionRowHandle = ICommonInputModule::GetSettings().GetDefaultBackAction();
-				break;
-			default:
-				break;
-			}
-
-
 			ButtonWidget->SetButtonText(ButtonInfo.ButtonTextToDisplay);
-			ButtonWidget->SetTriggeringInputAction(InputActionRowHandle);
 			ButtonWidget->OnClicked().AddLambda([this, ClickedButtonCallback, ButtonInfo]()
 				{
 					ClickedButtonCallback(ButtonInfo.ConfirmScreenButtonType);
@@ -114,8 +100,15 @@ void UWidget_ConfirmScreen::InitConfirmScreen(const UConfirmScreenInfoObject* In
 		}
 	}
 
+	
+}
+
+UWidget* UWidget_ConfirmScreen::NativeGetDesiredFocusTarget() const
+{
 	if (DynamicEntryBox_Buttons->GetNumEntries() != 0)
 	{
 		DynamicEntryBox_Buttons->GetAllEntries().Last()->SetFocus();
 	}
+
+	return Super::NativeGetDesiredFocusTarget();
 }

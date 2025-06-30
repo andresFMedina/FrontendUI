@@ -4,6 +4,7 @@
 #include "Widgets/Components/FrontendCommonButtonBase.h"
 #include "CommonTextBlock.h"
 #include "Subsystems/FrontendUISubsystem.h"
+#include "CommonLazyImage.h"
 
 
 void UFrontendCommonButtonBase::NativePreConstruct()
@@ -47,6 +48,14 @@ void UFrontendCommonButtonBase::SetButtonText(FText InText)
 	if (CommonTextBlock_ButtonText && !InText.IsEmpty())
 	{
 		CommonTextBlock_ButtonText->SetText(bUseUpperCaseButtonText ? InText.ToUpper() : InText);
+	}
+}
+
+void UFrontendCommonButtonBase::SetButtonDisplayImage(const FSlateBrush& InBrush)
+{
+	if (CommonLazyImage_ButtonImage)
+	{
+		CommonLazyImage_ButtonImage->SetBrush(InBrush);
 	}
 }
 

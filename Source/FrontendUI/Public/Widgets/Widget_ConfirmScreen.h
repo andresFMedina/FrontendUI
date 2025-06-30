@@ -52,6 +52,9 @@ class FRONTENDUI_API UWidget_ConfirmScreen : public UWidget_ActivatableBase
 public:
 	void InitConfirmScreen(const UConfirmScreenInfoObject* InConfirmScreenInfoObject, TFunction<void(EConfirmScreenButtonType)> ClickedButtonCallback);
 
+protected:
+	virtual UWidget* NativeGetDesiredFocusTarget() const override;
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	UCommonTextBlock* CommonTextBlock_Title;

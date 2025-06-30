@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "CommonInputTypeEnum.h"
 #include "OptionsDataRegistry.generated.h"
 
 
 class UListDataObject_Collection;
 class UListDataObject_Base;
+class UEnhancedInputUserSettings;
+struct FPlayerMappableKeyQueryOptions;
 /**
  * 
  */
@@ -34,8 +36,10 @@ private:
 	void InitGameplayCollectionTab();
 	void InitAudioCollectionTab();
 	void InitVideoCollectionTab();
-	void InitControlsCollectionTab();
+	void InitControlsCollectionTab(ULocalPlayer* InOwningLocalPlayer);
 
 	void FindChildListDataRecurively(UListDataObject_Base* InParentData, TArray<UListDataObject_Base*>& OutChildData) const;
+
+	void GetKeyMappingByInput(const FPlayerMappableKeyQueryOptions& QueryOptions, const ECommonInputType InputType, UEnhancedInputUserSettings* EIUserSettings, UListDataObject_Collection* ParentObject);
 	
 };
